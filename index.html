@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amigo Secreto</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        #lista { margin-top: 10px; }
+        .resultado { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Amigo Secreto</h1>
+    <input type="text" id="nome" placeholder="Digite um nome">
+    <button onclick="adicionarAmigo()">Adicionar</button>
+    <ul id="lista"></ul>
+    <button onclick="sortear()">Sortear</button>
+    <div class="resultado" id="resultado"></div>
+
+    <script>
+        let amigos = [];
+
+        function adicionarAmigo() {
+            let nome = document.getElementById('nome').value.trim();
+            if (nome && !amigos.includes(nome)) {
+                amigos.push(nome);
+                atualizarLista();
+                document.getElementById('nome').value = '';
+            } else {
+                alert("Nome inválido ou já adicionado!");
+            }
+        }
+
+        function atualizarLista() {
+            let lista = document.getElementById('lista');
+            lista.innerHTML = '';
+            amigos.forEach((amigo, index) => {
+                let item = document.createElement('li');
+                item.textContent = amigo;
+                lista.appendChild(item);
+            });
+        }
+
+        function sortear() {
+            if (amigos.length < 2) {
+                alert("Adicione pelo menos dois amigos para o sorteio!");
+                return;
+            }
+            let sorteio = [...amigos];
+            sorteio.sort(() => Math.random() - 0.5);
+            let resultado = "";
+            for (let i = 0; i < sorteio.length; i++) {
+                let proximo = (i + 1) % sorteio.length;
+                resultado += `${sorteio[i]} → ${sorteio[proximo]}<br>`;
+            }
+            document.getElementById('resultado').innerHTML = resultado;
+        }
+    </script>
+</body>
+</html>
