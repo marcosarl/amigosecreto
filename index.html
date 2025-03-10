@@ -20,6 +20,7 @@
 
     <script>
         let amigos = [];
+        let sorteados = [];
 
         function adicionarAmigo() {
             let nome = document.getElementById('nome').value.trim();
@@ -35,7 +36,7 @@
         function atualizarLista() {
             let lista = document.getElementById('lista');
             lista.innerHTML = '';
-            amigos.forEach((amigo, index) => {
+            amigos.forEach((amigo) => {
                 let item = document.createElement('li');
                 item.textContent = amigo;
                 lista.appendChild(item);
@@ -47,14 +48,20 @@
                 alert("Adicione pelo menos dois amigos para o sorteio!");
                 return;
             }
-            let sorteio = [...amigos];
-            sorteio.sort(() => Math.random() - 0.5);
-            let resultado = "";
-            for (let i = 0; i < sorteio.length; i++) {
-                let proximo = (i + 1) % sorteio.length;
-                resultado += `${sorteio[i]} → ${sorteio[proximo]}<br>`;
+
+            if (sorteados.length === amigos.length) {
+                alert("Todos os amigos já foram sorteados!");
+                sorteados = []; // Reinicia os sorteios
+                return;
             }
-            document.getElementById('resultado').innerHTML = resultado;
+
+            let sorteado;
+            do {
+                sorteado = amigos[Math.floor(Math.random() * amigos.length)];
+            } while (sorteados.includes(sorteado));
+
+            sorteados.push(sorteado);
+            document.getElementById('resultado').innerHTML = `🎉 Sorteado: ${sorteado}`;
         }
     </script>
 </body>
